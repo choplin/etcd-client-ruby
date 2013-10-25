@@ -25,7 +25,7 @@ module Etcd
         }
         path = build_keys_path(key)
         res = request(:get, path, params)
-        format(res.body)
+        format(res)
       end
 
       def watch(key, opts={})
@@ -39,8 +39,7 @@ module Etcd
         }
         path = build_keys_path(key)
         res = request(:put, path, params)
-
-        res.body
+        format(res)
       end
 
       def update
@@ -64,6 +63,7 @@ module Etcd
         }
         path = build_keys_path(key)
         res = request(:delete, path, params)
+        format(res)
       end
 
       private
@@ -121,12 +121,12 @@ module Etcd
         params.select{|k,v| not v.nil?}.map{|k,v| "#{k}=#{v}"}.join('&')
       end
 
-      def format(str)
+      def format(res)
         case @format
         when :json
-          str
+          res.body
         when :raw
-          JSON.parse(str)
+          JSON.parse(res.body)
         else
           raise NotImplementedError
         end
