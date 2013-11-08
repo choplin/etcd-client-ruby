@@ -83,9 +83,7 @@ module Etcd
                 r.set_form_data(merged_params)
                 r
               when :delete
-                r = Net::HTTP::Delete.new(path)
-                r.set_form_data(merged_params)
-                r
+                Net::HTTP::Delete.new(path + '?' + build_param_str(merged_params))
               else
                 raise 'unknown method'
               end
