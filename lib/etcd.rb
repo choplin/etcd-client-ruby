@@ -1,4 +1,3 @@
-require 'etcd/client'
 require 'etcd/client/v2'
 
 module Etcd
